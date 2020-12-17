@@ -1,0 +1,50 @@
+---
+openstack_servers_state: present
+openstack_servers: 
+  - instance_name: app1
+    group: apps
+    deployment: QA
+    security_group_name: apps
+    image: "{{ _server_image | default('rhel-7.6') }}"
+
+  - instance_name: app2
+    group: apps
+    deployment: dev
+    security_group_name: apps
+    image: "{{ _server_image | default('rhel-7.6') }}"
+
+  - instance_name: db
+    group: appdbs
+    deployment: dev
+    security_group_name: db
+    image: "{{ _server_image | default('rhel-7.6') }}"
+
+  - instance_name: frontend
+    group: frontends
+    deployment: dev
+    security_group_name: frontend
+    image: "{{ _server_image | default('rhel-7.6') }}"
+
+- name: Create instances
+  os_server:
+    cloud: openstack
+    name: "{{ __server_create.instance_name }}"
+    image: "{{ __server_create.image }}"
+    key_name: "{{ __server_create.key_name | default(ansible_ssh_key) }}"
+    flavor: "{{ __server_create.flavor | default(m2.medium) }}"
+    security_groups: "{{ __server_create.security_group_name }}"
+    delete_fip: yes
+    wait: no
+    nics:
+      - net-name: "{{ __server_create.network | default(int_network) }}"
+    meta: "group={{ __server_create.group }},deployment_name={{ __server_create.deployment }}"
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+   loop: "{{ openstack_servers }}"
+   loop_control:
+     loop_var: __server_create
+   async: 900
+   poll: 0
+   register: r_instances

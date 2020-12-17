@@ -1,0 +1,7 @@
+# source openstack-venv/bin/activate
+# Make sure you're in the openstack-venv (Above command)
+# export OS_CLOUD=openstack
+# ansible-playbook manage-flavors.yml (To create flavors)
+# Verify flavor is created.
+# ansible localhost -m os_flavor_facts -a 'name=m2.medium'
+# openstack flavor list
