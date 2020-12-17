@@ -5,3 +5,5 @@
 # Verify flavor is created.
 # ansible localhost -m os_flavor_facts -a 'name=m2.medium'
 # openstack flavor list
+# Add below line to the .vimrc in home directory:
+# autocmd FileType yaml setlocal ai ts=2 sw=2 et cuc
