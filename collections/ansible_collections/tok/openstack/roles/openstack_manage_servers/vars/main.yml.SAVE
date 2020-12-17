@@ -14,13 +14,13 @@ openstack_servers:
     security_group_name: apps
     image: "{{ _server_image | default('rhel-7.6') }}"
 
-  - instance_name: appdb1
+  - instance_name: db
     group: appdbs
     deployment: dev
     security_group_name: db
     image: "{{ _server_image | default('rhel-7.6') }}"
 
-  - instance_name: frontend1
+  - instance_name: frontend
     group: frontends
     deployment: dev
     security_group_name: frontend

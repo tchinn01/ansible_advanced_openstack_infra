@@ -7,3 +7,8 @@
 # openstack flavor list
 # Add below line to the .vimrc in home directory:
 # autocmd FileType yaml setlocal ai ts=2 sw=2 et cuc
+# 
+# Command to pull server list for dynamic inventory in Tower.
+# ansible all -i openstack_inventory.py --list-hosts -l "group_apps"
+# ansible all -i openstack_inventory.py -m reboot -b
+# ansible all -i openstack_inventory.py -m yum -a 'name=* state=latest' -b
